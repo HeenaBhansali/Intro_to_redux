@@ -6,34 +6,6 @@ const generateId = () => {
   )
 }
 
-// Library code
-
-const createStore = reducer => {
-  let state
-
-  let listeners = []
-
-  const getState = () => state
-
-  const subscribe = listener => {
-    listeners.push(listener)
-    return () => {
-      listeners = listeners.filter(l => l !== listener)
-    }
-  }
-
-  const dispatch = action => {
-    state = reducer(state, action)
-    listeners.forEach(listener => listener())
-  }
-
-  return {
-    getState,
-    subscribe,
-    dispatch
-  }
-}
-
 // APP CODE
 
 const ADD_TODO = "ADD_TODO"
@@ -109,14 +81,12 @@ const goals = (state = [], action) => {
   }
 }
 
-const app = (state = {}, action) => {
-  return {
-    todos: todos(state.todos, action),
-    goals: goals(state.goals, action)
-  }
-}
-
-const store = createStore(app)
+const store = Redux.createStore(
+  Redux.combineReducers({
+    todos,
+    goals
+  })
+)
 
 store.subscribe(() => {
   const { todos, goals } = store.getState()
