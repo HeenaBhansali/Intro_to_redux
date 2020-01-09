@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/react@16.3.0-alpha.1/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16.3.0-alpha.1/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/redux-thunk@2.2.0/dist/redux-thunk.min.js"></script>
     <script src="api.js"></script>
     <title>TODO APP WITH REDUX</title>
   </head>
@@ -150,14 +151,6 @@
         return result
       }
 
-      const thunk = state => next => action => {
-        if (typeof action === "function") {
-          return action(store.dispatch)
-        }
-
-        return next(action)
-      }
-
       // Reducer function
 
       const todos = (state = [], action) => {
@@ -207,7 +200,7 @@
           goals,
           loading
         }),
-        Redux.applyMiddleware(checker, logger, thunk)
+        Redux.applyMiddleware(ReduxThunk.default, checker, logger)
       )
 
       store.subscribe(() => {
